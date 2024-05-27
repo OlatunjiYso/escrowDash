@@ -27,6 +27,10 @@ export default async function InvoicesTable({
                       <p>{`${payment.buyerFirstname} ${payment.buyerLastname}`}</p>
                     </div>
                     <p className="text-sm text-gray-500">{payment.buyerEmail}</p>
+                    <div className="mb-2 mt-2 flex items-center">
+                      <p>{`${payment.sellerFirstname} ${payment.sellerLastname}`}</p>
+                    </div>
+                    <p className="text-sm text-gray-500">{payment.sellerEmail}</p>
                   </div>
                   <PaymentStatus status={payment.status} />
                 </div>
