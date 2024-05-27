@@ -45,7 +45,7 @@ export default async function Page() {
       <h1 className={`${josefin.className} mb-2 text-xl md:text-2xl`}>
         Dashboard
       </h1>
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-1">
+      <div className="grid gap-6 sm:grid-cols-1">
         <Suspense fallback={<CardsSkeleton />}>
           <CardWrapper />
         </Suspense>
