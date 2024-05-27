@@ -53,9 +53,9 @@ const PaymentAnalyticsSection = ({
   return (
     <div className="mb-16 border-2 border-gray-100 p-6 rounded-md">
       <div className="mb-6 mt-4 text-gray-600">
-        <h4>{ sectionTitle}</h4>
+        <h4>{ sectionTitle }</h4>
       </div>
-      <div className="flex justify-normal gap-8 border-2 border-gray-300 rounded-lg md:w-4/12 px-2 py-1 shadow-lg">
+      <div className="flex justify-normal gap-8 border-2 border-gray-300 rounded-lg px-2 py-1 shadow-lg sm:w-full md:w-8/12 xl:w-6/12">
         <div className="flex text-gray-500 ">
           <input
             className="mr-1 mt-1"
@@ -114,7 +114,7 @@ const PaymentAnalyticsSection = ({
         </div>
       </div>
       <br />
-      <div className=" block md:flex justify-between gap-6">
+      <div className="lg:flex block justify-between gap-6">
         <Card
           title="Successful"
           value={currentAnalytics.successful}
@@ -148,7 +148,7 @@ function Card({
   const Icon = iconMap[type];
 
   return (
-    <div className='rounded-xl bg-gray-50 p-2 shadow-sm flex flex-col grow border-2 border-blue-100'>
+    <div className='rounded-xl bg-gray-50 p-2 shadow-sm flex flex-col grow border-2 border-blue-100 mb-4 lg:mb-0 w-full'>
       <div className="flex p-4">
         {Icon ? <Icon className={clsx(
                   'h-5 w-5',
