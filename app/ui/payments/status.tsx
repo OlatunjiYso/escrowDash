@@ -11,7 +11,7 @@ export default function PaymentStatus({ status }: { status: string }) {
           'bg-gray-100 text-gray-500': status === 'pending',
           'bg-green-500 text-white': status === 'paid',
           'bg-yellow-200 text-white-500': status === 'disputed',
-          'bg-red-500 text-white': status === 'returned',
+          'bg-red-400 text-white': status === 'returned',
         },
       )}
     >
@@ -33,9 +33,9 @@ export default function PaymentStatus({ status }: { status: string }) {
           <ChatBubbleLeftRightIcon className="ml-1 w-4 text-gray-500" />
         </>
       ) : null}
-      {status === 'Returned' ? (
+      {status === 'returned' ? (
         <>
-          Paid
+          Returned
           <ReceiptRefundIcon className="ml-1 w-4 text-white" />
         </>
       ) : null}
