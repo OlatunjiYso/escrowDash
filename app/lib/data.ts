@@ -61,8 +61,13 @@ export async function fetchRevenue() {
     }
   }
 
-  export async function filteredPayments(term: string) {
-    const matchingPayments = dummyData.payments.filter((payment)=> (
+  export async function filteredPayments(term: string, status: string) {
+    let paymentsToConsider = dummyData.payments;
+   if(status !=='all') {
+    paymentsToConsider = dummyData.payments.filter((payment)=> payment.status === status)
+   }
+
+    const matchingPayments = paymentsToConsider.filter((payment)=> (
       payment.buyerEmail.toLowerCase().includes(term.toLowerCase()) ||
       payment.sellerEmail.toLowerCase().includes(term.toLowerCase()) ||
       payment.buyerFirstname.toLowerCase().includes(term.toLowerCase()) ||
@@ -73,16 +78,16 @@ export async function fetchRevenue() {
     return matchingPayments;
   }
 
-  export async function fetchFilteredPayments(term: string, page: number,) {
-    const matchingPayments = await filteredPayments(term);
+  export async function fetchFilteredPayments(term: string, page: number, status: string) {
+    const matchingPayments = await filteredPayments(term, status);
     if (matchingPayments.length === 0) return matchingPayments;
     if (matchingPayments.length <= LIMIT) return matchingPayments;
     const seenItems = page*LIMIT-1
     return  matchingPayments.slice(seenItems, seenItems+LIMIT);
   }
 
-  export async function fetchPaymentsPages(term: string) {
-    const matchingPayments = await filteredPayments(term)
+  export async function fetchPaymentsPages(term: string, status: string) {
+    const matchingPayments = await filteredPayments(term, status)
     const totalPages = Math.ceil(Number(matchingPayments.length) / LIMIT);
     return totalPages;
   }
