@@ -20,3 +20,12 @@ input[type="radio"]:focus {
   outline: none;
   box-shadow: none; 
 }
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding: 5px 10px;
+  font-size: 14px;
+  /* color: rgb(82, 82, 82); */
+  color: rgb(17, 52, 194);
+}
