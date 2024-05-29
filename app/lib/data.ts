@@ -2,8 +2,12 @@ import { unstable_noStore as noStore } from 'next/cache';
 import dummyData from './database';
 
 const LIMIT = 12;
+function delay(time: number){
+  return new Promise((resolve, _)=> setTimeout(resolve, time));
+}
 export async function fetchPaymentAnalyticsData() {
   noStore();
+  await delay(150);
   try {
     const daily = {
       pending : 5,
@@ -38,6 +42,7 @@ export async function fetchPaymentAnalyticsData() {
 
 export async function fetchRevenue() {
     noStore();
+    await delay(200);
     try {
       return dummyData.revenue;
     } catch (error) {
@@ -49,6 +54,7 @@ export async function fetchRevenue() {
   export async function fetchMonthlyPayments() {
     noStore();
     try {
+      await delay(600);
       return [
         { name: 'Successful', value: 800 },
         { name: 'Pending', value: 350 },
@@ -62,11 +68,11 @@ export async function fetchRevenue() {
   }
 
   export async function filteredPayments(term: string, status: string) {
+    await delay(100);
     let paymentsToConsider = dummyData.payments;
    if(status !=='all') {
     paymentsToConsider = dummyData.payments.filter((payment)=> payment.status === status)
    }
-
     const matchingPayments = paymentsToConsider.filter((payment)=> (
       payment.buyerEmail.toLowerCase().includes(term.toLowerCase()) ||
       payment.sellerEmail.toLowerCase().includes(term.toLowerCase()) ||
@@ -82,7 +88,7 @@ export async function fetchRevenue() {
     const matchingPayments = await filteredPayments(term, status);
     if (matchingPayments.length === 0) return matchingPayments;
     if (matchingPayments.length <= LIMIT) return matchingPayments;
-    const seenItems = page*LIMIT-1
+    const seenItems = (page-1)  * LIMIT;
     return  matchingPayments.slice(seenItems, seenItems+LIMIT);
   }
 
