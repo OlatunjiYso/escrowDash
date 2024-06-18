@@ -1,5 +1,10 @@
+
+var path = require('path');
+import { promises as fs } from 'fs';
+
 import { unstable_noStore as noStore } from 'next/cache';
-import dummyData from './database';
+import dummyData from './dataAccess';
+import { Payment } from './definitions';
 
 const LIMIT = 12;
 function delay(time: number){
@@ -51,6 +56,17 @@ export async function fetchRevenue() {
     }
   }
 
+  export async function fetchCustomers() {
+    noStore();
+    await delay(200);
+    try {
+      return dummyData.customers.slice(0,13);
+    } catch (error) {
+      console.error('Database Error:', error);
+      throw new Error('Failed to fetch customers.');
+    }
+  }
+
   export async function fetchMonthlyPayments() {
     noStore();
     try {
@@ -71,9 +87,9 @@ export async function fetchRevenue() {
     await delay(100);
     let paymentsToConsider = dummyData.payments;
    if(status !=='all') {
-    paymentsToConsider = dummyData.payments.filter((payment)=> payment.status === status)
+    paymentsToConsider = dummyData.payments.filter((payment:Payment)=> payment.status === status)
    }
-    const matchingPayments = paymentsToConsider.filter((payment)=> (
+    const matchingPayments = paymentsToConsider.filter((payment: Payment)=> (
       payment.buyerEmail.toLowerCase().includes(term.toLowerCase()) ||
       payment.sellerEmail.toLowerCase().includes(term.toLowerCase()) ||
       payment.buyerFirstname.toLowerCase().includes(term.toLowerCase()) ||
@@ -96,4 +112,20 @@ export async function fetchRevenue() {
     const matchingPayments = await filteredPayments(term, status)
     const totalPages = Math.ceil(Number(matchingPayments.length) / LIMIT);
     return totalPages;
+  }
+
+  export async function getParticipant(email: string) {
+    const index = Math.floor(Math.random() * 11);
+    const participant = dummyData.customers.find((customer)=> customer.email === email) || dummyData.customers[index]
+    return participant;
+  }
+
+  export async function addPayment(newEntry: Payment) {
+  const dbPath = process.cwd() + '/app/lib/database.json';
+  const file = await fs.readFile(dbPath, 'utf8');
+  let data = JSON.parse(file);
+   newEntry = JSON.parse(JSON.stringify(newEntry))
+  const updated = [ newEntry , ...data];
+  fs.writeFile(dbPath, JSON.stringify(updated));
+  dummyData.payments = [ newEntry, ...dummyData.payments]
   }

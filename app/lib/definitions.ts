@@ -35,4 +35,10 @@ export type User = {
     transactionId: string
   };
 
+  export type CustomerField = {
+    email: string;
+    firstname: string;
+    lastname: string;
+  };
+
   
