@@ -1,5 +1,8 @@
 import { promises as fs } from 'fs';
 
+const file = await fs.readFile(process.cwd() + '/app/lib/database.json', 'utf8');
+const payments = JSON.parse(file);
+
 const users = [
   {
     id: "1a2b3c4d",
@@ -400,9 +403,6 @@ const revenue = [
   { month: "Nov", revenue: 2800 },
   { month: "Dec", revenue: 4800 },
 ];
-
-const file = await fs.readFile(process.cwd() + '/app/lib/database.json', 'utf8');
-const payments = JSON.parse(file);
 
 
 const db = {

@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { addPayment, getParticipant } from "./data";
+import { addPayment, deletePaymentById, getParticipant, updatePaymentById } from "./data";
 
 
 const FormSchema = z.object({
@@ -63,9 +63,31 @@ export async function createPayment(formData: FormData) {
     sellerEmail: seller.email,
     trustAccount: 'Paypal'
   });
-  console.log('bout adding!!')
   await addPayment(newEntry);
   // persist record
   revalidatePath("/dashboard/payments");
   redirect("/dashboard/payments");
 }
+
+// Use Zod to update the expected types
+
+export async function updatePayment(id: string, formData: FormData) {
+  const { sellerEmail, buyerEmail, amount, status } = CreatePayment.parse({
+    sellerEmail: formData.get('sellerEmail'),
+    buyerEmail: formData.get('buyerEmail'),
+    amount: formData.get('amount'),
+    status: formData.get('status'),
+  });
+  const payload = { sellerEmail, buyerEmail, amount, status }
+  await updatePaymentById(id, payload);
+ 
+  revalidatePath('/dashboard/payments');
+  redirect('/dashboard/payments');
+}
+
+export async function deletePayment(id: string) {
+  await deletePaymentById(id);
+  revalidatePath('/dashboard/payments');
+}
+
+export async function initAction() {}

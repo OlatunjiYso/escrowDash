@@ -35,7 +35,23 @@ export type User = {
     transactionId: string
   };
 
+  export type PaymentForm = {
+    id: string;
+    buyerEmail: string;
+    sellerEmail: string;
+    amount: number;
+    status: 'pending' | 'paid' | 'disputed' | 'returned';
+  };
+
+  export type PaymentUpdate = {
+    buyerEmail: string;
+    sellerEmail: string;
+    amount: number;
+    status: 'pending' | 'paid' | 'disputed' | 'returned';
+  };
+
   export type CustomerField = {
+    id: string;
     email: string;
     firstname: string;
     lastname: string;
