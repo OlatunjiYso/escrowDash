@@ -5,6 +5,7 @@ import { josefin } from '@/app/ui/fonts';
 import { InvoicesTableSkeleton } from '@/app/ui/skeletons';
 import { Suspense } from 'react';
 import { fetchPaymentsPages } from '@/app/lib/data';
+import { CreatePayment } from '@/app/ui/payments/buttons';
 
  
 export default async function Page({ searchParams}: {
@@ -23,6 +24,7 @@ export default async function Page({ searchParams}: {
     <div className="w-full">
       <div className="flex w-full items-center justify-between">
         <h1 className={`${josefin.className} text-2xl`}>Payments</h1>
+        <CreatePayment />
       </div>
       <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
         <Search placeholder="Search payments by name or email..." />
