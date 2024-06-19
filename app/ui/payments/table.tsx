@@ -1,6 +1,8 @@
 import PaymentStatus from '@/app/ui/payments/status';
 import { formatDateToLocal, formatCurrency } from '@/app/lib/utils';
 import { fetchFilteredPayments } from '@/app/lib/data';
+import { UpdatePayment, DeletePayment } from './buttons';
+import { Payment } from '@/app/lib/definitions';
 
 export default async function InvoicesTable({
   query,
@@ -18,7 +20,7 @@ export default async function InvoicesTable({
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
           <div className="md:hidden">
-            {payments?.map((payment) => (
+            {payments?.map((payment: Payment) => (
               <div
                 key={payment.id}
                 className="mb-2 w-full rounded-md bg-white p-4"
@@ -77,7 +79,7 @@ export default async function InvoicesTable({
               </tr>
             </thead>
             <tbody className="bg-white">
-              {payments?.map((payment, index) => (
+              {payments?.map((payment: Payment, index: number) => (
                 <tr
                   key={payment.id}
                   className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
@@ -116,6 +118,12 @@ export default async function InvoicesTable({
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
                     <PaymentStatus status={payment.status} />
+                  </td>
+                  <td className="whitespace-nowrap py-3 pl-6 pr-3">
+                    <div className="flex justify-end gap-3">
+                      <UpdatePayment id={payment.id} />
+                      <DeletePayment id={payment.id} />
+                    </div>
                   </td>
                 </tr>
               ))}
