@@ -1,9 +1,12 @@
 
-var path = require('path');
+
 
 import { unstable_noStore as noStore } from 'next/cache';
 import appData from './dataAccess';
 import { Payment, PaymentUpdate } from './definitions';
+
+const allPayments: Payment[] = appData.payments as Payment[];
+
 
 const LIMIT = 12;
 function delay(time: number){
@@ -84,9 +87,9 @@ export async function fetchRevenue() {
 
   export async function filteredPayments(term: string, status: string) {
     await delay(100);
-    let paymentsToConsider = appData.payments;
+    let paymentsToConsider = allPayments;
    if(status !=='all') {
-    paymentsToConsider = appData.payments.filter((payment:Payment)=> payment.status === status)
+    paymentsToConsider = allPayments.filter((payment:Payment)=> payment.status === status)
    }
     const matchingPayments = paymentsToConsider.filter((payment: Payment)=> (
       payment.buyerEmail.toLowerCase().includes(term.toLowerCase()) ||
@@ -120,13 +123,13 @@ export async function fetchRevenue() {
   }
 
   export async function addPayment(newEntry: Payment) {
-  let data: Payment[] = appData.payments;
+  let data: Payment[] = allPayments;
   appData.payments = [ newEntry, ...data]
   }
 
   export async function updatePaymentById(id: string, paymentUpdate: PaymentUpdate) {
-    let data: Payment[] = appData.payments
-    let concernedPayment:Payment =  appData.payments[0]
+    let data: Payment[] = allPayments;
+    let concernedPayment:Payment =  allPayments[0]
     let restPayments: Payment[] = []
   
 
@@ -139,11 +142,11 @@ export async function fetchRevenue() {
   }
 
   export async function deletePaymentById(id: string) {
-    const restPayments = appData.payments.filter((payment: Payment)=> payment.id !== id);
+    const restPayments = allPayments.filter((payment: Payment)=> payment.id !== id);
     appData.payments = restPayments;
   }
 
   export async function fetchPaymentById(id: string) {
-    const payment: Payment = appData.payments.find((pay:Payment)=> pay.id === id);
+    const payment: Payment = allPayments.find((pay:Payment)=> pay.id === id) || allPayments[0];
     return payment;
   }

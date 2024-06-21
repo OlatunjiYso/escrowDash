@@ -32,7 +32,6 @@ export type User = {
     amount: number;
     trustAccount: string;
     status: 'pending' | 'paid' | 'disputed' | 'returned';
-    transactionId: string
   };
 
   export type PaymentForm = {

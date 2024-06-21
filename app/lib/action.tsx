@@ -17,8 +17,7 @@ const FormSchema = z.object({
   date: z.string(),
   amount: z.coerce.number(),
   status: z.enum(["pending", "paid", "returned", "disputed"]),
-  trustAccount: z.string(),
-  transactionId: z.string()
+  trustAccount: z.string()
 });
 
 const CreatePayment = FormSchema.omit({
@@ -28,8 +27,7 @@ const CreatePayment = FormSchema.omit({
   buyerLastname: true,
   sellerFirstname: true,
   sellerLastname: true,
-  trustAccount: true,
-  transactionId: true
+  trustAccount: true
 });
 
 const generateRandomString = (count: number)=> (
@@ -46,15 +44,13 @@ export async function createPayment(formData: FormData) {
   const date = new Date().toISOString().split("T")[0];
   const buyer = await getParticipant(buyerEmail);
   const seller = await getParticipant(sellerEmail);
-  const id = generateRandomString(8)
-  const transactionId = generateRandomString(12)
+  const id = generateRandomString(8);
 
   const newEntry = FormSchema.parse({
     id,
     date,
     amount,
     status,
-    transactionId,
     buyerFirstname: buyer.firstname,
     buyerLastname: buyer.lastname,
     sellerFirstname: seller.firstname,
