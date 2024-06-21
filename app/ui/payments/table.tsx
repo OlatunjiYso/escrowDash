@@ -73,9 +73,6 @@ export default async function InvoicesTable({
                 <th scope="col" className="px-3 py-5 font-medium">
                   Status
                 </th>
-                <th scope="col" className="relative py-3 pl-6 pr-3">
-                  <span className="sr-only">Edit</span>
-                </th>
               </tr>
             </thead>
             <tbody className="bg-white">
@@ -118,12 +115,6 @@ export default async function InvoicesTable({
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
                     <PaymentStatus status={payment.status} />
-                  </td>
-                  <td className="whitespace-nowrap py-3 pl-6 pr-3">
-                    <div className="flex justify-end gap-3">
-                      <UpdatePayment id={payment.id} />
-                      <DeletePayment id={payment.id} />
-                    </div>
                   </td>
                 </tr>
               ))}
