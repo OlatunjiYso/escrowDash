@@ -1,12 +1,10 @@
 
 var path = require('path');
-import { promises as fs } from 'fs';
 
 import { unstable_noStore as noStore } from 'next/cache';
 import appData from './dataAccess';
 import { Payment, PaymentUpdate } from './definitions';
 
-const DB_PATH = process.cwd() + '/app/lib/database.json';
 const LIMIT = 12;
 function delay(time: number){
   return new Promise((resolve, _)=> setTimeout(resolve, time));
@@ -122,40 +120,26 @@ export async function fetchRevenue() {
   }
 
   export async function addPayment(newEntry: Payment) {
-  const file = await fs.readFile(DB_PATH, 'utf8');
-  let data = JSON.parse(file);
-   newEntry = JSON.parse(JSON.stringify(newEntry))
-  const updated = [ newEntry , ...data];
-  fs.writeFile(DB_PATH, JSON.stringify(updated));
-  appData.payments = [ newEntry, ...appData.payments]
+  let data: Payment[] = appData.payments;
+  appData.payments = [ newEntry, ...data]
   }
 
   export async function updatePaymentById(id: string, paymentUpdate: PaymentUpdate) {
-    const file = await fs.readFile(DB_PATH, 'utf8');
-    let data: Payment[] = JSON.parse(file);
-    let concernedPayment:Payment = {} as Payment;
+    let data: Payment[] = appData.payments
+    let concernedPayment:Payment =  appData.payments[0]
     let restPayments: Payment[] = []
-     data.forEach((pay)=>{
-      if(pay.id === id) {
-        concernedPayment = pay
-      } else {
-        restPayments.push(pay);
-      }
-    });
+  
 
     concernedPayment.amount = paymentUpdate.amount;
     concernedPayment.buyerEmail = paymentUpdate.buyerEmail;
     concernedPayment.sellerEmail = paymentUpdate.sellerEmail;
     concernedPayment.status = paymentUpdate.status;
-
-    restPayments = [ concernedPayment, ...restPayments]
-    fs.writeFile(DB_PATH, JSON.stringify(restPayments));
+    restPayments = [ concernedPayment, ...data]
     appData.payments = restPayments;
   }
 
   export async function deletePaymentById(id: string) {
     const restPayments = appData.payments.filter((payment: Payment)=> payment.id !== id);
-    fs.writeFile(DB_PATH, JSON.stringify(restPayments));
     appData.payments = restPayments;
   }
 
